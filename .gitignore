@@ -1,0 +1,15 @@
+.snakemake
+snakemodules/notebooks/src/__pycache__/
+snakemodules/notebooks/src/stat_func/__pycache__/
+snakemodules/notebooks/.ipynb_checkpoints/
+snakemodules/notebooks/src/stat_func/.ipynb_checkpoints/
+snakemodules/notebooks/contig_coverage_heatmap_backup.py.ipynb
+snakemodules/analysis_develop.smk
+snakemodules/download_krakendb.smk
+example_data/kraken_db/
+example_data/
+logs/
+benchmarks/
+results/
+workdir/
+notify/

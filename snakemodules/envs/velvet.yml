@@ -1,0 +1,5 @@
+name: velvet
+channels:
+  - bioconda
+dependencies:
+  - velvet

@@ -1,0 +1,10 @@
+[submodule "submodules/gatb-minia-pipeline"]
+	path = submodules/gatb-minia-pipeline
+	url = https://github.com/GATB/gatb-minia-pipeline
+[submodule "submodules/sickle"]
+	path = submodules/sickle
+	url = https://github.com/najoshi/sickle.git
+[submodule "submodules/popins4snake"]
+	path = submodules/popins4snake
+	url = https://github.com/kehrlab/popins4snake.git
+        branch = main

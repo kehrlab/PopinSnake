@@ -1,0 +1,56 @@
+resources:
+    # sample based scheduling
+    # choose rules that process multiple samples at once,
+    # scale resources by the number of samples
+    sample_based:
+        mem_per_sample: 1000
+
+    # dynamic schedule can be defined in:
+    # contigmap.smk, rule map_supercontigs
+    dynamic_schedule:
+        mem_init: 4096
+        time: "12h"
+
+    # Rule based resources
+    email:
+        mem: 2048
+        time: "12h"
+    analysis:
+        mem: 8192
+        time: "12h"
+    kraken:
+        mem: 84000
+        time: "12h"
+    bwa:
+        mem: 16384
+        time: "12h"
+    samtools:
+        mem: 4096
+        time: "12h"
+    samtools_multithread:
+        mem_per_thread: 4096
+        time: "12h"
+    samtools_25G:
+        mem: 25600
+        time: "12h" 
+
+    # memory scaled setup
+    standard_2G:
+        mem: 2048
+        time: "12h"
+    standard_4G:
+        mem: 4096
+        time: "12h"
+    standard_8G:
+        mem: 8192
+        time: "12h"
+
+threads:
+    single: 1
+    # define number of threads used for the programs support multithreading
+    multi:
+        samtools: 16
+        bwa: 16
+        merge: 16
+        minia: 16
+        kraken: 16

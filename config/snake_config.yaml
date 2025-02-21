@@ -1,0 +1,86 @@
+### Define *full path* of references here
+REFERENCE:
+   /home/user/popinSnake/example_data/ref/chr21_ins.fa
+
+### Provide *full path* of input sample folder here
+INPUT_DIR:
+   /home/user/popinSnake/example_data/
+
+### Provide selected sample names from input sample folder (optional)
+### If not provide a list of samples, all samples found under input_dir will be analyzed 
+SAMPLES:
+   # - S0001
+   # - S0002
+   # - S0003
+
+### Provide *full path* of where your workflow is located
+# this path will be a prefix for submodules and log files within the workflow
+# e.g.: /home/user/popinSnake
+WORKFLOW_PATH:
+   /home/user/popinSnake/
+
+### Provide *full path* of where you wish the analyzed output to be stored
+# this path is a prefix for WORK_DIR and RESULTS_DIR
+# e.g.: /home/user/../output
+OUTPUT_PATH:
+   /home/user/output_path/
+
+### Choose workflow behaviour here
+SICKLE:
+   "yes"
+ASSEMBLER:
+   "minia"
+ANALYSIS:
+   "yes"
+
+### Define contamination removal module
+remove_contamination:
+   "yes"
+# Provid an alternative reference genome after contamination removal to ensure that cleaned reads are accurately realigned
+ALTREF:
+   /home/user/popinSnake/example_data/altref/chr21_remap.fa
+# Define the *full path* of where the kraken database is installed
+kraken_db_path:
+   /home/user/popinSnake/example_data/kraken_db/
+# deprecated parameters for snakefile download_krakendb
+# check readme file for more information on how to download krakendb
+# Pipeline to automatically download the chosen kraken database
+#install_kraken_db:
+#   "no"
+#kraken_lib:
+#   "https://genome-idx.s3.amazonaws.com/kraken/k2_standard_08gb_20240605.tar.gz"
+
+### Define other workflow parameter values here
+receive_email_notifications: "no" # choose between "yes" or "no" to receive email notifications or not
+email: "user@example.com" # specify your email address here to receive email notifications before each notebook execution.
+kmerlength: 29  # for velvet assembly
+k_merge: 63     # for rule popins2_merge_contigs
+readlen: 150    # for rules popins2_place_refalign and popins2_place_splitalign
+min-qual: 30    # for rule popins2_crop_unmapped, Minimum average quality value in windows for read quality trimming.
+min-read-len: 60 # for rule popins2_crop_unmapped, Minimum read length to keep the read after quality trimming.
+
+
+# Sub-directories for OUTPUT_PATH
+# These folders will be automatically created after snakemake execution
+# WORK_DIR includes intermediate output, processed data
+# RESUTLS_DIR includes analyzed output, final results
+WORK_DIR:
+   workdir
+RESULTS_DIR:
+   results
+
+# Define paths to binaries:
+# (Change only if you are not using the default installation locations.)
+POPINS2_BIN:
+   submodules/popins4snake/popins4snake
+MINIA_BIN:
+   submodules/gatb-minia-pipeline/gatb
+SICKLE_BIN:
+   submodules/sickle/sickle
+VELVET_BIN:
+   submodules/velvet
+# Part of the contamination removal module
+python_script:
+   snakemodules/scripts/remap_classified_human.py
+
+
