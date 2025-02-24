@@ -157,3 +157,27 @@ rule popins2_place_finish:
         "   --insertions {rules.popins2_place_refalign.output.vcf}"
         "   --reference {REFERENCE} "
         "   > {log.out} 2> {log.err}"
+
+rule sort_vcf:
+    input:
+        RESULTS_DIR + "/place-finish.done",
+        ins=RESULTS_DIR + "/insertions_unsorted.vcf"
+    output:
+        temp(RESULTS_DIR + "/insertions.vcf")
+    conda:
+        os.path.join(WORKFLOW_PATH,"snakemodules/envs/bcftools.yml")
+    resources:
+        mem_mb = resources["standard_2G"]["mem"],
+        runtime = resources["standard_2G"]["time"]
+    threads: 
+        threads["single"]
+    log:
+        out="logs/genotype/sort_vcf.out",
+        err="logs/genotype/sort_vcf.err"
+    benchmark:
+        "benchmarks/genotype/sort_vcf.txt"
+    shell:
+        "bcftools sort {input.ins} "
+        "   --output-file {output}"
+        "   --output-type v"
+        "   > {log.out} 2> {log.err}"
