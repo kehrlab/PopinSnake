@@ -1,6 +1,6 @@
 # PopinSnake workflow
 
-This Git repository contains a generic [Snakemake](https://snakemake.readthedocs.io/en/stable/) workflow for running the program [*PopIns4Snake*](https://gitlab.informatik.hu-berlin.de/fonda_a6/popins4snake.git).
+This Git repository contains a generic [Snakemake](https://snakemake.readthedocs.io/en/stable/) workflow for running the program [*PopIns4Snake*](https://github.com/kehrlab/popins4snake.git).
 It is supposed to facilitate your PopIns run and provides examples for a streamlined workflow. 
 
 ## Contents
@@ -58,7 +58,7 @@ The `gatb-minia-pipeline` program requires no separate installation.
 
 #### Installing the *PopIns4Snake* program
 
-[PopIns4Snake](https://gitlab.informatik.hu-berlin.de/fonda_a6/popins4snake) is the main program executed by the workflow.
+[PopIns4Snake](https://github.com/kehrlab/popins4snake.git) is the main program executed by the workflow.
 Before we can compile *PopIns4Snake*, we need to compile and install its dependency [Bifrost](https://github.com/pmelsted/bifrost).
 For this, navigate to the `bifrost` folder and compile *Bifrost* using the flag `MAX_KMER_SIZE=64`:
 
