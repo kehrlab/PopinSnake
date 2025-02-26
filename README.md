@@ -357,7 +357,7 @@ doubling the memory allocation on each retry. This ensures tasks with unpredicta
 
 Cao K., Elfaramawy N., Weidlich M., Kehr B. (2022)
 __From Program Chains to Exploratory Workflows: PopinSnake for Insertion Detection in Genomics.__
-In: 2023 IEEE 19th International Conference on e-Science (e-Science).
+[2023 IEEE 19th International Conference on e-Science](https://ieeexplore.ieee.org/document/10254924)
 
 Krannich T., White W. T. J., Niehus S., Holley G., Halldórsson B. V., Kehr B. (2022)
 __Population-scale detection of non-reference sequence variants using colored de Bruijn graphs.__
