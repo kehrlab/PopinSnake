@@ -32,7 +32,8 @@ if config["SICKLE"]=="no":
             paired1=expand("{p}/{s}/paired.1.fastq", p=WORK_DIR, s=SAMPLES),
             paired2=expand("{p}/{s}/paired.2.fastq", p=WORK_DIR, s=SAMPLES)
         output:
-            RESULTS_DIR + "/read_numbers.png"
+            RESULTS_DIR + "/read_numbers.pdf",
+            RESULTS_DIR + "/read_numbers.txt"
         conda:
             os.path.join(WORKFLOW_PATH,"snakemodules/envs/notebooks.yml")
         benchmark:
@@ -82,7 +83,8 @@ if config["SICKLE"]=="no":
                 paired1=expand("{p}/{s}/paired_1_clean.fastq", p=WORK_DIR, s=SAMPLES),
                 paired2=expand("{p}/{s}/paired_2_clean.fastq", p=WORK_DIR, s=SAMPLES)
             output:
-                RESULTS_DIR + "/read_numbers_no_sickle_after_clean.png"
+                RESULTS_DIR + "/read_numbers_no_sickle_after_clean.pdf",
+                RESULTS_DIR + "/read_numbers_no_sickle_after_clean.txt"
             conda:
                 os.path.join(WORKFLOW_PATH,"snakemodules/envs/notebooks.yml")
             benchmark:
@@ -131,7 +133,8 @@ elif config["SICKLE"]=="yes":
                 paired1=expand("{p}/{s}/paired.1.fastq", p=WORK_DIR, s=SAMPLES),
                 paired2=expand("{p}/{s}/paired.2.fastq", p=WORK_DIR, s=SAMPLES)
             output:
-                RESULTS_DIR + "/read_numbers_before_filter.png"
+                RESULTS_DIR + "/read_numbers_before_filter.pdf",
+                RESULTS_DIR + "/read_numbers_before_filter.txt",
             conda:
                 os.path.join(WORKFLOW_PATH,"snakemodules/envs/notebooks.yml")
             benchmark:
@@ -179,7 +182,8 @@ elif config["SICKLE"]=="yes":
                 paired1 = expand("{p}/{s}/sickle.paired.1.fastq", p=WORK_DIR, s=SAMPLES),
                 paired2 = expand("{p}/{s}/sickle.paired.2.fastq", p=WORK_DIR, s=SAMPLES)
             output:
-                RESULTS_DIR + "/read_numbers_after_filter.png"
+                RESULTS_DIR + "/read_numbers_after_filter.pdf",
+                RESULTS_DIR + "/read_numbers_after_filter.txt"
             conda:
                 os.path.join(WORKFLOW_PATH,"snakemodules/envs/notebooks.yml")
             benchmark:
@@ -228,7 +232,8 @@ elif config["SICKLE"]=="yes":
                 paired1 = expand("{p}/{s}/paired.1.fastq", p=WORK_DIR, s=SAMPLES),
                 paired2 = expand("{p}/{s}/paired.2.fastq", p=WORK_DIR, s=SAMPLES)
             output:
-                RESULTS_DIR + "/read_numbers_before_clean_filter.png"
+                RESULTS_DIR + "/read_numbers_before_clean_filter.pdf",
+                RESULTS_DIR + "/read_numbers_before_clean_filter.txt"
             conda:
                 os.path.join(WORKFLOW_PATH,"snakemodules/envs/notebooks.yml")
             benchmark:
@@ -275,7 +280,8 @@ elif config["SICKLE"]=="yes":
                 paired1 = expand("{p}/{s}/paired_1_clean.fastq", p=WORK_DIR, s=SAMPLES),
                 paired2 = expand("{p}/{s}/paired_2_clean.fastq", p=WORK_DIR, s=SAMPLES)
             output:
-                RESULTS_DIR + "/read_numbers_after_clean.png"
+                RESULTS_DIR + "/read_numbers_after_clean.pdf",
+                RESULTS_DIR + "/read_numbers_after_clean.txt"
             conda:
                 os.path.join(WORKFLOW_PATH,"snakemodules/envs/notebooks.yml")
             benchmark:
@@ -321,7 +327,8 @@ elif config["SICKLE"]=="yes":
                 paired1 = expand("{p}/{s}/sickle.paired_1_clean.fastq", p=WORK_DIR, s=SAMPLES),
                 paired2 = expand("{p}/{s}/sickle.paired_2_clean.fastq", p=WORK_DIR, s=SAMPLES)
             output:
-                RESULTS_DIR + "/read_numbers_after_clean_filter.png"
+                RESULTS_DIR + "/read_numbers_after_clean_filter.pdf",
+                RESULTS_DIR + "/read_numbers_after_clean_filter.txt"
             conda:
                 os.path.join(WORKFLOW_PATH,"snakemodules/envs/notebooks.yml")
             benchmark:
@@ -365,7 +372,8 @@ rule assembly_analysis_table:
         notify="notify/assembly_analysis_table.txt",
         contigs = expand("{p}/{s}/{assemblr}.contigs.fa", p=WORK_DIR, s=SAMPLES, assemblr=ASSEMBLER)
     output:
-        RESULTS_DIR + "/analysis_table.png"
+        RESULTS_DIR + "/analysis_table.pdf",
+        RESULTS_DIR + "/analysis_table.txt"
     conda:
         os.path.join(WORKFLOW_PATH,"snakemodules/envs/notebooks.yml")
     benchmark:
@@ -406,8 +414,10 @@ rule assembly_analysis:
         notify="notify/assembly_analysis.txt",
         contigs = expand("{p}/{s}/{assemblr}.contigs.fa", p=WORK_DIR, s=SAMPLES, assemblr=ASSEMBLER)
     output:
-        len = RESULTS_DIR + "/contig_length_dist.png",
-        gc = RESULTS_DIR + "/gc_content_dist.png"
+        len = RESULTS_DIR + "/contig_length_dist.pdf",
+        gc = RESULTS_DIR + "/gc_content_dist.pdf",
+        len_txt = RESULTS_DIR + "/distribution_length.txt",
+        gc_txt = RESULTS_DIR + "/distribution_gc.txt"
     conda:
         os.path.join(WORKFLOW_PATH,"snakemodules/envs/notebooks.yml")
     benchmark:
@@ -470,7 +480,8 @@ rule coverage_analysis:
         cov = expand(WORK_DIR + "/{s}/coverage.txt", s=SAMPLES),
         fasta = RESULTS_DIR + "/supercontigs.fa"
     output:
-        RESULTS_DIR + "/heatmap_coverage.png"
+        RESULTS_DIR + "/heatmap_coverage.pdf",
+        RESULTS_DIR + "/heatmap_coverage.txt"
     conda:
         os.path.join(WORKFLOW_PATH,"snakemodules/envs/notebooks.yml")
     benchmark:
