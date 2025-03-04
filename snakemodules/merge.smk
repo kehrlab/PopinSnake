@@ -2,9 +2,9 @@
 rule popins2_merge_contigs:
     input:
         expand("{p}/{s}/{assemblr}.contigs.fa", p=WORK_DIR, s=SAMPLES, assemblr=ASSEMBLER),
-        os.path.join(RESULTS_DIR, "analysis_table.png") if config["ANALYSIS"]=="yes" else [],
-        os.path.join(RESULTS_DIR, "contig_length_dist.png") if config["ANALYSIS"]=="yes" else [],
-        os.path.join(RESULTS_DIR, "gc_content_dist.png") if config["ANALYSIS"]=="yes" else []
+        os.path.join(RESULTS_DIR, "analysis_table.pdf") if config["ANALYSIS"]=="yes" else [],
+        os.path.join(RESULTS_DIR, "contig_length_dist.pdf") if config["ANALYSIS"]=="yes" else [],
+        os.path.join(RESULTS_DIR, "gc_content_dist.pdf") if config["ANALYSIS"]=="yes" else []
     output:
         supercontigs = RESULTS_DIR + "/supercontigs.fa",
         gfa          = RESULTS_DIR + "/supercontigs.gfa",

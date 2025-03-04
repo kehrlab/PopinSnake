@@ -41,7 +41,7 @@ if config["remove_contamination"] == 'yes':
             os.path.join(WORKFLOW_PATH,"snakemodules/envs/bwa.yml")
         resources:
             # Dynamically iterating mem
-            mem_mb = lambda wildcards, attempt: config["dynamic_schedule"]["mem_init"]* (2** (attempt - 1)),
+            mem_mb = lambda wildcards, attempt: resources["dynamic_schedule"]["mem_init"]* (2** (attempt - 1)),
             # mem_mb = resources["bwa"]["mem"],
             runtime = resources["bwa"]["time"]
         threads: 
@@ -71,7 +71,7 @@ elif config["remove_contamination"] == 'no':
             os.path.join(WORKFLOW_PATH,"snakemodules/envs/bwa.yml")
         resources:
             # Dynamically iterating mem
-            mem_mb = lambda wildcards, attempt: config["dynamic_schedule"]["mem_init"]* (2** (attempt - 1)),
+            mem_mb = lambda wildcards, attempt: resources["dynamic_schedule"]["mem_init"]* (2** (attempt - 1)),
             # mem_mb = resources["bwa"]["mem"],
             runtime = resources["bwa"]["time"]
         threads: 

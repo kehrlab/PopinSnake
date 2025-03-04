@@ -5,7 +5,7 @@ if config["remove_contamination"] == 'yes':
     rule remap_find_locations:
         input:
             expand(WORK_DIR + "/{s}/non_ref_new.bam", s=SAMPLES),
-            os.path.join(RESULTS_DIR, "heatmap_coverage.png") if config["ANALYSIS"]=="yes" else [],
+            os.path.join(RESULTS_DIR, "heatmap_coverage.pdf") if config["ANALYSIS"]=="yes" else [],
             WORK_DIR + "/{sample}/remapped_non_ref.bam"
         output:
             temp(WORK_DIR + "/{sample}/locations.txt")
@@ -31,7 +31,7 @@ elif config["remove_contamination"] == 'no':
 
     rule popins2_find_locations:
         input:
-            os.path.join(RESULTS_DIR, "heatmap_coverage.png") if config["ANALYSIS"]=="yes" else [],
+            os.path.join(RESULTS_DIR, "heatmap_coverage.pdf") if config["ANALYSIS"]=="yes" else [],
             expand(WORK_DIR + "/{s}/{f}", s=SAMPLES, f=["non_ref_new.bam","non_ref.bam"])
         output:
             temp(WORK_DIR + "/{sample}/locations.txt")
@@ -55,7 +55,7 @@ elif config["remove_contamination"] == 'no':
 
 rule popins2_merge_locations:
     input:
-        os.path.join(RESULTS_DIR, "heatmap_coverage.png") if config["ANALYSIS"]=="yes" else [],
+        os.path.join(RESULTS_DIR, "heatmap_coverage.pdf") if config["ANALYSIS"]=="yes" else [],
         expand(WORK_DIR + "/{s}/locations.txt", s=SAMPLES)
     output:
         loc=RESULTS_DIR + "/locations.txt"
@@ -157,6 +157,7 @@ rule popins2_place_finish:
         "   --insertions {rules.popins2_place_refalign.output.vcf}"
         "   --reference {REFERENCE} "
         "   > {log.out} 2> {log.err}"
+
 
 rule sort_vcf:
     input:

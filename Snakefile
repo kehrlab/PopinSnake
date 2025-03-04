@@ -71,16 +71,16 @@ elif config["remove_contamination"]=="yes":
     input_files.append(expand("{p}/{s}/contaminate_info/single_report.txt", p=WORK_DIR, s=SAMPLES))
 
 if config["ANALYSIS"]=="yes":
-    input_files.append(expand("{p}/{f}", p=RESULTS_DIR, f=["analysis_table.png","gc_content_dist.png","contig_length_dist.png","heatmap_coverage.png"]))
+    input_files.append(expand("{p}/{f}", p=RESULTS_DIR, f=["analysis_table.pdf","gc_content_dist.pdf","contig_length_dist.pdf","heatmap_coverage.pdf"]))
     if config["SICKLE"]=="no":
-        input_files.append(expand("{p}/{f}", p=RESULTS_DIR, f=["read_numbers.png"]))
+        input_files.append(expand("{p}/{f}", p=RESULTS_DIR, f=["read_numbers.pdf"]))
         if config["remove_contamination"]=="yes":
-            input_files.append(expand("{p}/{f}", p=RESULTS_DIR, f=["read_numbers_no_sickle_after_clean.png"]))
+            input_files.append(expand("{p}/{f}", p=RESULTS_DIR, f=["read_numbers_no_sickle_after_clean.pdf"]))
     elif config["SICKLE"]=="yes":
         if config["remove_contamination"]=="no":
-            input_files.append(expand("{p}/{f}", p=RESULTS_DIR, f=["read_numbers_before_filter.png","read_numbers_after_filter.png"]))
+            input_files.append(expand("{p}/{f}", p=RESULTS_DIR, f=["read_numbers_before_filter.pdf","read_numbers_after_filter.pdf"]))
         elif config["remove_contamination"]=="yes":
-            input_files.append(expand("{p}/{f}", p=RESULTS_DIR, f=["read_numbers_before_clean_filter.png","read_numbers_after_clean.png","read_numbers_after_clean_filter.png"]))
+            input_files.append(expand("{p}/{f}", p=RESULTS_DIR, f=["read_numbers_before_clean_filter.pdf","read_numbers_after_clean.pdf","read_numbers_after_clean_filter.pdf"]))
 
 
 
