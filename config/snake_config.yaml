@@ -7,7 +7,8 @@ INPUT_DIR:
    /home/user/popinSnake/example_data/
 
 ### Provide selected sample names from input sample folder (optional)
-### If not provide a list of samples, all samples found under input_dir will be analyzed 
+# If sample names are not provided, workflow will automatically look for samples.bam and samples.bai under input_dir
+# all samples found under input_dir will be analyzed
 SAMPLES:
    # - S0001
    # - S0002
