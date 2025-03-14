@@ -97,7 +97,7 @@ rule name_sort_unsorted:
         os.path.join(WORKFLOW_PATH,"snakemodules/envs/samtools.yml")
     resources:
         mem_per_thread = resources["samtools_multithread"]["mem_per_thread"],
-        mem_mb = lambda wildcards, input, threads, attempt: resources["samtools_multithread"]["mem_per_thread"] * threads,
+        mem_mb = lambda wildcards, input, threads, attempt: resources["samtools_multithread"]["mem_per_thread"] * (threads + 2),
         runtime = resources["samtools_multithread"]["time"]
     threads: 
         threads["multi"]["samtools"]
@@ -174,7 +174,7 @@ rule coordinate_sort_unsorted:
         os.path.join(WORKFLOW_PATH,"snakemodules/envs/samtools.yml")
     resources:
         mem_per_thread = resources["samtools_multithread"]["mem_per_thread"],
-        mem_mb = lambda wildcards, input, threads, attempt: resources["samtools_multithread"]["mem_per_thread"] * threads,
+        mem_mb = lambda wildcards, input, threads, attempt: resources["samtools_multithread"]["mem_per_thread"] * (threads + attempt),
         runtime = resources["samtools_multithread"]["time"]
     threads: 
         threads["multi"]["samtools"]
@@ -184,7 +184,7 @@ rule coordinate_sort_unsorted:
         "benchmarks/contigmap/{sample}_coordinate_sort_unsorted.txt"
     shell:
         """
-        samtools sort -@ {threads} -m {resources.mem_per_thread}M -o {output} {input} 2> {log.err}
+        samtools sort -@ {threads} -m {resources.mem_per_thread}M -o {output} -T {tmpdir} {input} 2> {log.err}
         """
 
 

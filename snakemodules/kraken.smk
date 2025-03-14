@@ -22,7 +22,7 @@ rule kraken_map:
     conda:
         os.path.join(WORKFLOW_PATH,"snakemodules/envs/kraken2.yml")
     resources:
-        mem_mb = resources["kraken"]["mem"],
+        mem_mb = lambda wildcards, attempt: resources["kraken"]["mem"] * attempt,
         runtime = resources["kraken"]["time"]
     threads: 
         threads["multi"]["kraken"]
