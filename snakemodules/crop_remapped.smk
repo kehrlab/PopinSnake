@@ -53,7 +53,7 @@ if config["SICKLE"]=="no":
             
     rule popins2_sort:
         input:
-            os.path.join(RESULTS_DIR, "read_numbers.png") if config["ANALYSIS"]=="yes" else [],
+            os.path.join(RESULTS_DIR, "read_numbers.pdf") if config["ANALYSIS"]=="yes" else [],
             mates = WORK_DIR + "/{sample}/mates.bam"
         output:
             temp(WORK_DIR + "/{sample}/non_ref.bam")
@@ -106,7 +106,7 @@ elif config["SICKLE"]=="yes":
 
     rule popins2_sort:
         input:
-            # os.path.join(RESULTS_DIR, "read_numbers.png") if config["ANALYSIS"]=="yes" else [],
+            # os.path.join(RESULTS_DIR, "read_numbers.pdf") if config["ANALYSIS"]=="yes" else [],
             mates = WORK_DIR + "/{sample}/mates.bam"
         output:
             temp(WORK_DIR + "/{sample}/non_ref.bam")
@@ -127,7 +127,7 @@ elif config["SICKLE"]=="yes":
 
     rule popins2_sickle:
         input:
-            # os.path.join(RESULTS_DIR, "read_numbers.png") if config["ANALYSIS"]=="yes" else [],
+            # os.path.join(RESULTS_DIR, "read_numbers.pdf") if config["ANALYSIS"]=="yes" else [],
             single = WORK_DIR + "/{sample}/single_clean.fastq", 
             pair_1 = WORK_DIR + "/{sample}/paired_1_clean.fastq", 
             pair_2 = WORK_DIR + "/{sample}/paired_2_clean.fastq"
