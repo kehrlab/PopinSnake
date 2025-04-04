@@ -417,7 +417,8 @@ rule assembly_analysis:
         len = RESULTS_DIR + "/contig_length_dist.pdf",
         gc = RESULTS_DIR + "/gc_content_dist.pdf",
         len_txt = RESULTS_DIR + "/distribution_length.txt",
-        gc_txt = RESULTS_DIR + "/distribution_gc.txt"
+        gc_txt = RESULTS_DIR + "/distribution_gc.txt",
+        distribution = RESULTS_DIR + "/sample_distribution_info.txt"
     conda:
         os.path.join(WORKFLOW_PATH,"snakemodules/envs/notebooks.yml")
     benchmark:
@@ -481,7 +482,8 @@ rule coverage_analysis:
         fasta = RESULTS_DIR + "/supercontigs.fa"
     output:
         RESULTS_DIR + "/heatmap_coverage.pdf",
-        RESULTS_DIR + "/heatmap_coverage.txt"
+        RESULTS_DIR + "/heatmap_coverage.txt",
+        RESULTS_DIR + "/contigs_sorted_by_length.txt"
     conda:
         os.path.join(WORKFLOW_PATH,"snakemodules/envs/notebooks.yml")
     benchmark:
