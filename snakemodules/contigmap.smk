@@ -175,7 +175,8 @@ rule coordinate_sort_unsorted:
     resources:
         mem_per_thread = resources["samtools_multithread"]["mem_per_thread"],
         mem_mb = lambda wildcards, input, threads, attempt: resources["samtools_multithread"]["mem_per_thread"] * (threads + attempt),
-        runtime = resources["samtools_multithread"]["time"]
+        runtime = resources["samtools_multithread"]["time"],
+        tmpdir=tempfile.gettempdir()
     threads: 
         threads["multi"]["samtools"]
     log:
