@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - container-setup
-    tags: 
+    tags:
       - 'v*'       # optional: trigger on version tags like v1.2.3
 
 jobs:
@@ -36,11 +36,10 @@ jobs:
           context: .
           file: ./ContainerFile
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/${{ github.repository }}/app:${{ github.sha }}
-          # Optionally add multiple tags:
-          # tags: |
-          #   ghcr.io/${{ github.repository_owner }}/${{ github.repository }}/app:latest
-          #   ghcr.io/${{ github.repository_owner }}/${{ github.repository }}/app:${{ github.sha }}
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/popins4snake:latest
+            ghcr.io/${{ github.repository_owner }}/popins4snake:${{ github.sha }}
+
 
       - name: Output image reference
         run: echo "Published ghcr.io/${{ github.repository_owner }}/${{ github.repository }}/app:${{ github.sha }}"
