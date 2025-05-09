@@ -31,12 +31,6 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "VERSION=${{ github.event.inputs.version }}" >> $GITHUB_ENV
-          elif [[ "${GITHUB_REF}" =~ ^refs/tags/(v.+)$ ]]; then
-            # strip the "refs/tags/" prefix so VERSION=v0.0
-            echo "VERSION=${BASH_REMATCH[1]}" >> $GITHUB_ENV
-          else
-            # fallback for branch pushes
-            echo "VERSION=latest" >> $GITHUB_ENV
           fi
 
       - name: Set up Docker Buildx
@@ -56,7 +50,7 @@ jobs:
           file: ./ContainerFile
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/popins4snake:latest
+            #ghcr.io/${{ github.repository_owner }}/popins4snake:latest
             ghcr.io/${{ github.repository_owner }}/popins4snake:${{ env.VERSION }}
 
 
