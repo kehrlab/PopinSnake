@@ -49,9 +49,7 @@ jobs:
           context: .
           file: ./ContainerFile
           push: true
-          tags: |
-            #ghcr.io/${{ github.repository_owner }}/popins4snake:latest
-            ghcr.io/${{ github.repository_owner }}/popins4snake:${{ env.VERSION }}
+          tags: ghcr.io/${{ github.repository_owner }}/popins4snake:${{ env.VERSION }}
 
 
       - name: Output image reference
