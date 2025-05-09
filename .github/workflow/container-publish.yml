@@ -2,8 +2,10 @@ name: Build & Publish Docker Image
 
 on:
   push:
-    branches: [ container-setup ]      # or your default branch
-    tags: [ 'v*' ]       # optional: trigger on version tags like v1.2.3
+    branches:
+      - container-setup
+    tags: 
+      - 'v*'       # optional: trigger on version tags like v1.2.3
 
 jobs:
   build-and-push:
