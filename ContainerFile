@@ -1,0 +1,69 @@
+# ────────────────────────────────────────────────────────────────
+# 1) Builder stage: compile Bifrost & popins4snake
+# ────────────────────────────────────────────────────────────────
+FROM ubuntu:20.04 AS builder
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# 1.1 Install build dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    build-essential \
+    cmake \
+    libbz2-dev \
+    liblzma-dev \
+    zlib1g-dev \
+    libcurl4-gnutls-dev \
+  && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /opt
+
+# 1.2 Clone popins4snake with its submodules
+#     (includes Bifrost as a submodule) :contentReference[oaicite:0]{index=0}
+RUN git clone --recursive \
+      https://gitlab.informatik.hu-berlin.de/fonda_a6/popins4snake.git popins4snake
+
+# 1.3 Build and install Bifrost (MAX_KMER_SIZE=64) :contentReference[oaicite:1]{index=1}
+WORKDIR /opt/popins4snake/external/bifrost
+RUN mkdir build && cd build \
+ && cmake .. -DCMAKE_INSTALL_PREFIX=../local -DMAX_KMER_SIZE=64 \
+ && make \
+ && make install
+
+# 1.4 Build popins4snake
+WORKDIR /opt/popins4snake
+RUN mkdir build \
+ && make
+
+# 1.5 Install the popins4snake binary
+RUN cp popins4snake /usr/local/bin/
+
+# 1.6 Clone and build Sickle from source
+WORKDIR /opt
+RUN git clone --recursive https://github.com/najoshi/sickle.git sickle 
+
+WORKDIR /opt/sickle
+RUN make
+RUN cp sickle /usr/local/bin/
+
+# ────────────────────────────────────────────────────────────────
+# 2) Runtime stage: lean image with extra bio-tools
+# ────────────────────────────────────────────────────────────────
+FROM docker.io/continuumio/miniconda3:latest
+
+# 2.1 Add Bioconda & Conda-Forge channels, install tools
+RUN conda config --add channels conda-forge \
+ && conda config --add channels bioconda \
+ && conda install -y \
+      bwa \
+      samtools \
+      velvet \
+ && conda clean -afy
+
+
+# 2.2 Copy the compiled binary in
+COPY --from=builder /usr/local/bin/popins4snake /usr/local/bin/
+COPY --from=builder /usr/local/bin/sickle /usr/local/bin/
+# 2.3 Default entrypoint: show help
+ENTRYPOINT ["popins4snake"]
+CMD ["--help"]
