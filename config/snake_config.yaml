@@ -76,7 +76,7 @@ RESULTS_DIR:
 POPINS4SNAKE:
    popins4snake
 MINIA_BIN:
-   gatb
+   submodules/gatb-minia-pipeline/gatb
 SICKLE_BIN:
    sickle
 VELVET_BIN:

@@ -1,5 +1,5 @@
 import os
-
+import tempfile
 
 
 rule index_supercontigs:
