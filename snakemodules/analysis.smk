@@ -447,6 +447,8 @@ rule calculate_coverage:
         mem_mb = resources["analysis"]["mem"],
         runtime = resources["analysis"]["time"]
     threads: threads["single"]
+    container:
+        containers["popins4snake"]
     shell:
         "samtools coverage {input.bams} > {output.cov}"
 

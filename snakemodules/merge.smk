@@ -16,13 +16,15 @@ rule popins2_merge_contigs:
         threads["multi"]["merge"]
     params:
         k = config["k_merge"]
+    container:
+        containers["popins4snake"]
     log:
         out="logs/merge/merge_contigs.out",
         err="logs/merge/merge_contigs.err"
     benchmark:
         "benchmarks/merge/merge_contigs.txt"
     shell:
-        "{POPINS2_BIN} merge-contigs"
+        "{POPINS4SNAKE} merge-contigs"
         "   -k {params.k}"
         "   -f {ASSEMBLER}.contigs.fa"
         "   -t {threads}"

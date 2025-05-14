@@ -18,6 +18,8 @@ rule index_supercontigs:
         runtime = resources["standard_2G"]["time"]
     threads: 
         threads["single"]
+    container:
+        containers["popins4snake"]
     log:
         err="logs/contigmap/index_supercontigs.err"
     benchmark:
@@ -46,6 +48,8 @@ if config["remove_contamination"] == 'yes':
             runtime = resources["bwa"]["time"]
         threads: 
             threads["multi"]["bwa"]
+        container:
+            containers["popins4snake"]
         log:
             err="logs/contigmap/{sample}_map_supercontigs.err"
         benchmark:
@@ -76,6 +80,8 @@ elif config["remove_contamination"] == 'no':
             runtime = resources["bwa"]["time"]
         threads: 
             threads["multi"]["bwa"]
+        container:
+            containers["popins4snake"]
         log:
             err="logs/contigmap/{sample}_map_supercontigs.err"
         benchmark:
@@ -101,6 +107,8 @@ rule name_sort_unsorted:
         runtime = resources["samtools_multithread"]["time"]
     threads: 
         threads["multi"]["samtools"]
+    container:
+        containers["popins4snake"]
     log:
         err="logs/contigmap/{sample}_name_sort_unsorted.err"
     benchmark:
@@ -125,13 +133,15 @@ if config["remove_contamination"] == 'yes':
             runtime = resources["standard_2G"]["time"]
         threads: 
             threads["single"]
+        container:
+            containers["popins4snake"]
         log:
             out="logs/contigmap/{sample}_contaminate_removed_remap_merge_set_mate.out",
             err="logs/contigmap/{sample}_contaminate_removed_remap_merge_set_mate.err"
         benchmark:
             "benchmarks/contigmap/{sample}_contaminate_removed_remap_merge_set_mate.txt"
         shell:
-            "{POPINS2_BIN} merge-bams remapped_non_ref.bam contig_mapped.bam"
+            "{POPINS4SNAKE} merge-bams remapped_non_ref.bam contig_mapped.bam"
             "   --prefix {WORK_DIR} "
             "   --sample {wildcards.sample} "
             "   -o merged.bam "
@@ -151,13 +161,15 @@ elif config["remove_contamination"] == 'no':
             runtime = resources["standard_2G"]["time"]
         threads: 
             threads["single"]
+        container:
+            containers["popins4snake"]
         log:
             out="logs/contigmap/{sample}_remap_merge_set_mate.out",
             err="logs/contigmap/{sample}_remap_merge_set_mate.err"
         benchmark:
             "benchmarks/contigmap/{sample}_remap_merge_set_mate.txt"
         shell:
-            "{POPINS2_BIN} merge-bams non_ref.bam contig_mapped.bam"
+            "{POPINS4SNAKE} merge-bams non_ref.bam contig_mapped.bam"
             "   --prefix {WORK_DIR} "
             "   --sample {wildcards.sample} "
             "   -o merged.bam "
@@ -179,6 +191,8 @@ rule coordinate_sort_unsorted:
         tmpdir=tempfile.gettempdir()
     threads: 
         threads["multi"]["samtools"]
+    container:
+        containers["popins4snake"]
     log:
         err="logs/contigmap/{sample}_coordinate_sort_unsorted.err"
     benchmark:
@@ -201,6 +215,8 @@ rule index_sorted:
         runtime = resources["samtools"]["time"]
     threads: 
         threads["single"]
+    container:
+        containers["popins4snake"]
     log:
         err="logs/contigmap/{sample}_index_sorted.err"
     benchmark:

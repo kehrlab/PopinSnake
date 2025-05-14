@@ -70,16 +70,17 @@ WORK_DIR:
 RESULTS_DIR:
    results
 
-# Define paths to binaries:
+# Binaries from container setup
+# Define paths to binaries if use submodules instead of container env:
 # (Change only if you are not using the default installation locations.)
-POPINS2_BIN:
-   submodules/popins4snake/popins4snake
+POPINS4SNAKE:
+   popins4snake
 MINIA_BIN:
-   submodules/gatb-minia-pipeline/gatb
+   gatb
 SICKLE_BIN:
-   submodules/sickle/sickle
+   sickle
 VELVET_BIN:
-   submodules/velvet
+   velvet
 # Part of the contamination removal module
 python_script:
    snakemodules/scripts/remap_classified_human.py

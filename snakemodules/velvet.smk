@@ -17,6 +17,8 @@ if config["SICKLE"]=="yes":
                 runtime = resources["standard_4G"]["time"]
             threads: 
                 threads["single"]
+            container:
+                containers["popins4snake"]
             log:
                 out="logs/{assemblr}/{sample}_sickle_clean.out",
                 err="logs/{assemblr}/{sample}_sickle_clean.err"
@@ -24,8 +26,8 @@ if config["SICKLE"]=="yes":
                 "benchmarks/{assemblr}/{sample}_sickle_clean.txt"
             shell:
                 "mkdir {WORK_DIR}/{wildcards.sample}/assembly/;"
-                "{VELVET}/velveth {WORK_DIR}/{wildcards.sample}/assembly/ {params.kmerlength} -short -fastq {input.single} -shortPaired -fastq -separate {input.pair_1} {input.pair_2} > {log.out} 2> {log.err};"
-                "{VELVET}/velvetg {WORK_DIR}/{wildcards.sample}/assembly/ -exp_cov auto -cov_cutoff 2 -max_coverage 100 -scaffolding no >> {log.out} 2>> {log.err};"    
+                "velveth {WORK_DIR}/{wildcards.sample}/assembly/ {params.kmerlength} -short -fastq {input.single} -shortPaired -fastq -separate {input.pair_1} {input.pair_2} > {log.out} 2> {log.err};"
+                "velvetg {WORK_DIR}/{wildcards.sample}/assembly/ -exp_cov auto -cov_cutoff 2 -max_coverage 100 -scaffolding no >> {log.out} 2>> {log.err};"    
                 "mv {WORK_DIR}/{wildcards.sample}/assembly/contigs.fa {WORK_DIR}/{wildcards.sample}/{wildcards.assemblr}.contigs.fa;"
                 "rm -r {WORK_DIR}/{wildcards.sample}/assembly/"
 
@@ -47,6 +49,8 @@ if config["SICKLE"]=="yes":
                 runtime = resources["standard_4G"]["time"]
             threads: 
                 threads["single"]
+            container:
+                containers["popins4snake"]
             log:
                 out="logs/{assemblr}/{sample}_sickle.out",
                 err="logs/{assemblr}/{sample}_sickle.err"
@@ -54,8 +58,8 @@ if config["SICKLE"]=="yes":
                 "benchmarks/{assemblr}/{sample}_sickle.txt"
             shell:
                 "mkdir {WORK_DIR}/{wildcards.sample}/assembly/;"
-                "{VELVET}/velveth {WORK_DIR}/{wildcards.sample}/assembly/ {params.kmerlength} -short -fastq {input.single} -shortPaired -fastq -separate {input.pair_1} {input.pair_2} > {log.out} 2> {log.err};"
-                "{VELVET}/velvetg {WORK_DIR}/{wildcards.sample}/assembly/ -exp_cov auto -cov_cutoff 2 -max_coverage 100 -scaffolding no >> {log.out} 2>> {log.err};"    
+                "velveth {WORK_DIR}/{wildcards.sample}/assembly/ {params.kmerlength} -short -fastq {input.single} -shortPaired -fastq -separate {input.pair_1} {input.pair_2} > {log.out} 2> {log.err};"
+                "velvetg {WORK_DIR}/{wildcards.sample}/assembly/ -exp_cov auto -cov_cutoff 2 -max_coverage 100 -scaffolding no >> {log.out} 2>> {log.err};"    
                 "mv {WORK_DIR}/{wildcards.sample}/assembly/contigs.fa {WORK_DIR}/{wildcards.sample}/{wildcards.assemblr}.contigs.fa;"
                 "rm -r {WORK_DIR}/{wildcards.sample}/assembly/"
 
@@ -77,6 +81,8 @@ elif config["SICKLE"]=="no":
                 runtime = resources["standard_4G"]["time"]
             threads: 
                 threads["single"]
+            container:
+                containers["popins4snake"]
             log:
                 out="logs/{assemblr}/{sample}_clean.out",
                 err="logs/{assemblr}/{sample}_clean.err"
@@ -84,8 +90,8 @@ elif config["SICKLE"]=="no":
                 "benchmarks/{assemblr}/{sample}_clean.txt"
             shell:
                 "mkdir {WORK_DIR}/{wildcards.sample}/assembly/;"
-                "{VELVET}/velveth {WORK_DIR}/{wildcards.sample}/assembly/ {params.kmerlength} -short -fastq {input.single} -shortPaired -fastq -separate {input.pair_1} {input.pair_2} > {log.out} 2> {log.err};"
-                "{VELVET}/velvetg {WORK_DIR}/{wildcards.sample}/assembly/ -exp_cov auto -cov_cutoff 2 -max_coverage 100 -scaffolding no >> {log.out} 2>> {log.err};"    
+                "velveth {WORK_DIR}/{wildcards.sample}/assembly/ {params.kmerlength} -short -fastq {input.single} -shortPaired -fastq -separate {input.pair_1} {input.pair_2} > {log.out} 2> {log.err};"
+                "velvetg {WORK_DIR}/{wildcards.sample}/assembly/ -exp_cov auto -cov_cutoff 2 -max_coverage 100 -scaffolding no >> {log.out} 2>> {log.err};"    
                 "mv {WORK_DIR}/{wildcards.sample}/assembly/contigs.fa {WORK_DIR}/{wildcards.sample}/{wildcards.assemblr}.contigs.fa;"
                 "rm -r {WORK_DIR}/{wildcards.sample}/assembly/"
 
@@ -107,6 +113,8 @@ elif config["SICKLE"]=="no":
                 runtime = resources["standard_4G"]["time"]
             threads: 
                 threads["single"]
+            container:
+                containers["popins4snake"]
             log:
                 out="logs/{assemblr}/{sample}.out",
                 err="logs/{assemblr}/{sample}.err"
@@ -114,7 +122,7 @@ elif config["SICKLE"]=="no":
                 "benchmarks/{assemblr}/{sample}.txt"
             shell:
                 "mkdir {WORK_DIR}/{wildcards.sample}/assembly/;"
-                "{VELVET}/velveth {WORK_DIR}/{wildcards.sample}/assembly/ {params.kmerlength} -short -fastq {input.single} -shortPaired -fastq -separate {input.pair_1} {input.pair_2} > {log.out} 2> {log.err};"
-                "{VELVET}/velvetg {WORK_DIR}/{wildcards.sample}/assembly/ -exp_cov auto -cov_cutoff 2 -max_coverage 100 -scaffolding no >> {log.out} 2>> {log.err};"    
+                "velveth {WORK_DIR}/{wildcards.sample}/assembly/ {params.kmerlength} -short -fastq {input.single} -shortPaired -fastq -separate {input.pair_1} {input.pair_2} > {log.out} 2> {log.err};"
+                "velvetg {WORK_DIR}/{wildcards.sample}/assembly/ -exp_cov auto -cov_cutoff 2 -max_coverage 100 -scaffolding no >> {log.out} 2>> {log.err};"    
                 "mv {WORK_DIR}/{wildcards.sample}/assembly/contigs.fa {WORK_DIR}/{wildcards.sample}/{wildcards.assemblr}.contigs.fa;"
                 "rm -r {WORK_DIR}/{wildcards.sample}/assembly/"

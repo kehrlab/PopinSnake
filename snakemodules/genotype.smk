@@ -12,13 +12,15 @@ rule popins2_genotype:
         runtime = resources["standard_2G"]["time"]
     threads: 
         threads["single"]
+    container:
+        containers["popins4snake"]
     log:
         out="logs/genotype/{sample}_genotype.out",
         err="logs/genotype/{sample}_genotype.err"
     benchmark:
         "benchmarks/genotype/{sample}_genotype.txt"
     shell:
-        "{POPINS2_BIN} genotype "
+        "{POPINS4SNAKE} genotype "
         "   --prefix {WORK_DIR} "
         "   --insertions {input.ins} "
         "   --contigs {rules.popins2_merge_contigs.output.supercontigs} "
@@ -39,6 +41,8 @@ rule merge_vcfs:
         runtime = resources["standard_2G"]["time"]
     threads: 
         threads["single"]
+    container:
+        containers["popins4snake"]
     log:
         out="logs/genotype/merge_vcfs.out",
         err="logs/genotype/merge_vcfs.err"

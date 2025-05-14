@@ -62,8 +62,6 @@ RUN conda config --add channels conda-forge \
       velvet \
       bcftools=1.15 \
       kraken2 \
- && conda create -y -n py27 python=2.7 \
-
  && conda clean -afy
 
 

@@ -37,6 +37,8 @@ if config["SICKLE"]=="no":
             runtime = resources["standard_4G"]["time"]
         threads: 
             threads["single"]
+        container:
+            containers["popins4snake"]
         log:
             out="logs/crop_remapped/{sample}_crop_remapped.out",
             err="logs/crop_remapped/{sample}_crop_remapped.err"
@@ -44,7 +46,7 @@ if config["SICKLE"]=="no":
             "benchmarks/crop_remapped/{sample}_crop_remapped.txt"
         shell:
             "mkdir -p {WORK_DIR}/{wildcards.sample}; "
-            "{POPINS2_BIN} crop-unmapped {input}"
+            "{POPINS4SNAKE} crop-unmapped {input}"
             "   --prefix {WORK_DIR} "
             "   --sample {wildcards.sample}"
             "   --min-qual {params.q}"
@@ -65,6 +67,8 @@ if config["SICKLE"]=="no":
             runtime = resources["samtools_multithread"]["time"]
         threads: 
             threads["multi"]["samtools"]
+        container:
+            containers["popins4snake"]
         log:
             err="logs/crop_remapped/{sample}_sort.err"
         benchmark:
@@ -92,6 +96,8 @@ elif config["SICKLE"]=="yes":
             runtime = resources["standard_4G"]["time"]
         threads: 
             threads["single"]
+        container:
+            containers["popins4snake"]
         log:
             out="logs/crop_remapped/{sample}_crop_remapped_sickle.out",
             err="logs/crop_remapped/{sample}_crop_remapped_sickle.err"
@@ -99,7 +105,7 @@ elif config["SICKLE"]=="yes":
             "benchmarks/crop_remapped/{sample}_crop_remapped_sickle.txt"
         shell:
             "mkdir -p {WORK_DIR}/{wildcards.sample}; "
-            "{POPINS2_BIN} crop-unmapped {input}"
+            "{POPINS4SNAKE} crop-unmapped {input}"
             "   --prefix {WORK_DIR} "
             "   --sample {wildcards.sample}"
             "   > {log.out} 2> {log.err}"
@@ -118,6 +124,8 @@ elif config["SICKLE"]=="yes":
             runtime = resources["samtools_multithread"]["time"]
         threads: 
             threads["multi"]["samtools"]
+        container:
+            containers["popins4snake"]
         log:
             err="logs/crop_remapped/{sample}_sort_sickle.err"
         benchmark:
@@ -145,6 +153,8 @@ elif config["SICKLE"]=="yes":
             runtime = resources["standard_2G"]["time"]
         threads: 
             threads["single"]
+        container:
+            containers["popins4snake"]
         log:
             out="logs/crop_remapped/{sample}_sickle.out",
             err="logs/crop_remapped/{sample}_sickle.err"

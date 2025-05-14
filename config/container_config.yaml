@@ -1,0 +1,3 @@
+containers:
+    popins4snake: docker://ghcr.io/kehrlab/popins4snake:latest
+    py27: docker://python:2.7

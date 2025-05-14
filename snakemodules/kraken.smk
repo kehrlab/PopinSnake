@@ -17,8 +17,6 @@ rule kraken_map:
         c_paired_2 = temp(WORK_DIR + "/{sample}/contaminate_info/cseqs_2.fq"),
         u_paired_1 = temp(WORK_DIR + "/{sample}/contaminate_info/useqs_1.fq"),
         u_paired_2 = temp(WORK_DIR + "/{sample}/contaminate_info/useqs_2.fq")
-    singularity:
-        "docker://staphb/kraken2:latest"
     conda:
         os.path.join(WORKFLOW_PATH,"snakemodules/envs/kraken2.yml")
     resources:
@@ -26,6 +24,8 @@ rule kraken_map:
         runtime = resources["kraken"]["time"]
     threads: 
         threads["multi"]["kraken"]
+    container:
+        containers["popins4snake"]
     log:
         out="logs/kraken/{sample}_kraken_map.out",
         err="logs/kraken/{sample}_kraken_map.err"
@@ -73,6 +73,8 @@ rule obtain_classified_human_reads:
         runtime = resources["standard_2G"]["time"]
     threads: 
         threads["single"]
+    container:
+        containers["popins4snake"]
     log:
         out="logs/kraken/{sample}_obtain_classified_human_reads.out",
         err="logs/kraken/{sample}_obtain_classified_human_reads.err"
@@ -80,7 +82,7 @@ rule obtain_classified_human_reads:
         "benchmarks/kraken/{sample}_obtain_classified_human_reads.txt"
     shell:
         """
-        python {input.script} \
+        python3 {input.script} \
             --classified_single {input.classified_single} \
             --classified_paired {input.classified_paired} \
             --single_fq {input.single_fq} \
@@ -106,6 +108,8 @@ rule index_ref:
         runtime = resources["standard_8G"]["time"]
     threads: 
         threads["single"]
+    container:
+        containers["popins4snake"]
     log:
         err="logs/kraken/index_ref.err"
     benchmark:
@@ -129,6 +133,8 @@ rule bwa_remap_classified_human:
         runtime = resources["bwa"]["time"]
     threads: 
         threads["multi"]["bwa"]
+    container:
+        containers["popins4snake"]
     log:
         err="logs/kraken/{sample}_bwa_remap_classified_human.err"
     benchmark:
@@ -155,6 +161,8 @@ rule samtools_remap_classified_human:
         runtime = resources["samtools_multithread"]["time"]
     threads: 
         threads["multi"]["samtools"]
+    container:
+        containers["popins4snake"]
     log:
         err="logs/kraken/{sample}_samtools_remap_classified_human.err"
     benchmark:
@@ -177,6 +185,8 @@ rule index_reads:
         runtime = resources["standard_2G"]["time"]
     threads: 
         threads["single"]
+    container:
+        containers["popins4snake"]
     log:
         err="logs/kraken/{sample}_index_reads.err"
     benchmark:
@@ -200,13 +210,15 @@ rule crop_remapped:
         runtime = resources["standard_2G"]["time"]
     threads: 
         threads["single"]
+    container:
+        containers["popins4snake"]
     log:
         out="logs/kraken/{sample}_crop_remapped.out",
         err="logs/kraken/{sample}_crop_remapped.err"
     benchmark:
         "benchmarks/kraken/{sample}_crop_remapped.txt"    
     shell:
-        "{POPINS2_BIN} crop-unmapped {input.bam}"
+        "{POPINS4SNAKE} crop-unmapped {input.bam}"
         "   -m remapped_mates.unsorted.bam"
         "   -pe1 remapped_paired.1.fastq"
         "   -pe2 remapped_paired.2.fastq"
@@ -229,6 +241,8 @@ rule remapping_samsort_mates:
         runtime = resources["samtools_multithread"]["time"]
     threads: 
         threads["multi"]["samtools"]
+    container:
+        containers["popins4snake"]
     log:
         err="logs/kraken/{sample}_remapping_samsort_mates.err"
     benchmark:
@@ -248,13 +262,15 @@ rule merge_set_mate:
         runtime = resources["standard_2G"]["time"]
     threads: 
         threads["single"]
+    container:
+        containers["popins4snake"]
     log:
         out="logs/kraken/{sample}_merge_set_mate.out",
         err="logs/kraken/{sample}_merge_set_mate.err"
     benchmark:
         "benchmarks/kraken/{sample}_merge_set_mate.txt" 
     shell:
-        "{POPINS2_BIN} merge-bams non_ref.bam remapped_mates.bam"
+        "{POPINS4SNAKE} merge-bams non_ref.bam remapped_mates.bam"
         "   --prefix {WORK_DIR} "
         "   --sample {wildcards.sample} "
         "   -o remapped_non_ref.bam"

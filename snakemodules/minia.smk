@@ -16,6 +16,8 @@ if config["SICKLE"]=="yes":
                 runtime = resources["standard_8G"]["time"]
             threads: 
                 threads["multi"]["minia"]
+            container:
+                containers["py27"]
             log:
                 out="logs/{assemblr}/{sample}_sickle_clean.out",
                 err="logs/{assemblr}/{sample}_sickle_clean.err"
@@ -44,6 +46,8 @@ if config["SICKLE"]=="yes":
                 runtime = resources["standard_8G"]["time"]
             threads: 
                 threads["multi"]["minia"]
+            container:
+                containers["py27"]
             log:
                 out="logs/{assemblr}/{sample}_sickle.out",
                 err="logs/{assemblr}/{sample}_sickle.err"
@@ -72,6 +76,8 @@ elif config["SICKLE"]=="no":
                 runtime = resources["standard_8G"]["time"]
             threads: 
                 threads["multi"]["minia"]
+            container:
+                containers["py27"]
             log:
                 out="logs/{assemblr}/{sample}_clean.out",
                 err="logs/{assemblr}/{sample}_clean.err"
@@ -100,6 +106,8 @@ elif config["SICKLE"]=="no":
                 runtime = resources["standard_8G"]["time"]
             threads: 
                 threads["multi"]["minia"]
+            container:
+                containers["py27"]
             log:
                 out="logs/{assemblr}/{sample}.out",
                 err="logs/{assemblr}/{sample}.err"

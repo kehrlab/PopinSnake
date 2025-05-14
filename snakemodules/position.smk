@@ -14,13 +14,15 @@ if config["remove_contamination"] == 'yes':
             runtime = resources["standard_4G"]["time"]
         threads: 
             threads["single"]
+        container:
+            containers["popins4snake"]
         log:
             out="logs/position/{sample}_remap_find_locations.out",
             err="logs/position/{sample}_remap_find_locations.err"
         benchmark:
             "benchmarks/position/{sample}_remap_find_locations.txt"
         shell:
-            "{POPINS2_BIN} find-locations {wildcards.sample}"
+            "{POPINS4SNAKE} find-locations {wildcards.sample}"
             "   -n remapped_non_ref.bam "
             "   --prefix {WORK_DIR} "
             "   --reference {REFERENCE} "
@@ -40,13 +42,15 @@ elif config["remove_contamination"] == 'no':
             runtime = resources["standard_4G"]["time"]
         threads: 
             threads["single"]
+        container:
+            containers["popins4snake"]
         log:
             out="logs/position/{sample}_find_locations.out",
             err="logs/position/{sample}_find_locations.err"
         benchmark:
             "benchmarks/position/{sample}_find_locations.txt"
         shell:
-            "{POPINS2_BIN} find-locations {wildcards.sample}"
+            "{POPINS4SNAKE} find-locations {wildcards.sample}"
             "   --prefix {WORK_DIR} "
             "   --reference {REFERENCE} "
             "   > {log.out} 2> {log.err}"   
@@ -64,13 +68,15 @@ rule popins2_merge_locations:
         runtime = resources["standard_2G"]["time"]
     threads: 
         threads["single"]
+    container:
+        containers["popins4snake"]
     log:
         out="logs/position/merge_locations.out",
         err="logs/position/merge_locations.err"
     benchmark:
         "benchmarks/position/merge_locations.txt"
     shell:
-        "{POPINS2_BIN} merge-locations "
+        "{POPINS4SNAKE} merge-locations "
         "   --prefix {WORK_DIR} "
         "   --locations {RESULTS_DIR}/locations.txt "
         "   > {log.out} 2> {log.err}"
@@ -92,13 +98,15 @@ rule popins2_place_refalign:
         runtime = resources["standard_2G"]["time"]
     threads: 
         threads["single"]
+    container:
+        containers["popins4snake"]
     log:
         out="logs/position/place_refalign.out",
         err="logs/position/place_refalign.err"
     benchmark:
         "benchmarks/position/place_refalign.txt"
     shell:
-        "{POPINS2_BIN} place-refalign "
+        "{POPINS4SNAKE} place-refalign "
         "   --prefix {WORK_DIR} "
         "   --locations {RESULTS_DIR}/locations.txt "
         "   --insertions {RESULTS_DIR}/insertions_unsorted.vcf "
@@ -121,13 +129,15 @@ rule popins2_place_splitalign:
         runtime = resources["standard_2G"]["time"]
     threads: 
         threads["single"]
+    container:
+        containers["popins4snake"]
     log:
         out="logs/position/{sample}_place_splitalign.out",
         err="logs/position/{sample}_place_splitalign.err"
     benchmark:
         "benchmarks/position/{sample}_place_splitalign.txt"
     shell:
-        "{POPINS2_BIN} place-splitalign "
+        "{POPINS4SNAKE} place-splitalign "
         "   --prefix {WORK_DIR} "
         "   --contigs {rules.popins2_merge_contigs.output.supercontigs} "
         "   --reference {REFERENCE} "
@@ -146,13 +156,15 @@ rule popins2_place_finish:
         runtime = resources["standard_2G"]["time"]
     threads: 
         threads["single"]
+    container:
+        containers["popins4snake"]
     log:
         out="logs/position/place_finish.out",
         err="logs/position/place_finish.err"
     benchmark:
         "benchmarks/position/place_finish.txt"
     shell:
-        "{POPINS2_BIN} place-finish "
+        "{POPINS4SNAKE} place-finish "
         "   --prefix {WORK_DIR} "
         "   --insertions {rules.popins2_place_refalign.output.vcf}"
         "   --reference {REFERENCE} "
@@ -172,6 +184,8 @@ rule sort_vcf:
         runtime = resources["standard_2G"]["time"]
     threads: 
         threads["single"]
+    container:
+        containers["popins4snake"]
     log:
         out="logs/genotype/sort_vcf.out",
         err="logs/genotype/sort_vcf.err"

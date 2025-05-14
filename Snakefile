@@ -10,6 +10,7 @@ import re
 
 configfile: os.path.join(workflow.basedir,"config","snake_config.yaml")
 configfile: os.path.join(workflow.basedir,"config","cluster_config.yaml")
+configfile: os.path.join(workflow.basedir, "config", "container_config.yaml")
 
 # Input files and directories  
 INPUT_DIR = config["INPUT_DIR"]
@@ -21,15 +22,20 @@ WORKFLOW_PATH = config["WORKFLOW_PATH"]
 ASSEMBLER = config["ASSEMBLER"]
 resources = config["resources"]
 threads = config["threads"]
+containers = config["containers"]
+POPINS4SNAKE = config["POPINS4SNAKE"]
+SICKLE = config["SICKLE_BIN"]
+GATB = config["MINIA_BIN"]
+VELVET = config["VELVET_BIN"]
 
 
 relative_paths = {
     WORK_DIR := os.path.join(OUTPUT_PATH, config["WORK_DIR"]),
-    RESULTS_DIR := os.path.join(OUTPUT_PATH, config["RESULTS_DIR"]),    
-    POPINS2_BIN := os.path.join(WORKFLOW_PATH,config["POPINS2_BIN"]),
-    SICKLE := os.path.join(WORKFLOW_PATH,config["SICKLE_BIN"]),
-    GATB := os.path.join(WORKFLOW_PATH,config["MINIA_BIN"]),
-    VELVET := os.path.join(WORKFLOW_PATH, config["VELVET_BIN"])
+    RESULTS_DIR := os.path.join(OUTPUT_PATH, config["RESULTS_DIR"])    
+    # POPINS4SNAKE := os.path.join(WORKFLOW_PATH,config["POPINS4SNAKE"]),
+    # SICKLE := os.path.join(WORKFLOW_PATH,config["SICKLE_BIN"]),
+    # GATB := os.path.join(WORKFLOW_PATH,config["MINIA_BIN"]),
+    # VELVET := os.path.join(WORKFLOW_PATH, config["VELVET_BIN"])
     }
 
 # Natural sort helper
