@@ -170,7 +170,7 @@ rule samtools_remap_classified_human:
     shell:
         """
         samtools view -Sb {input.sam} > {output.remapped_unsorted} 2> {log.err};
-        samtools sort -@ {threads} -m {resources.mem_per_thread}M -o {output.remapped_bam} {output.remapped_unsorted} 2>> {log.err}
+        samtools sort -@ {threads} -m {resources.mem_per_thread}M -o {output.remapped_bam} -T {resources.tmpdir} {output.remapped_unsorted} 2>> {log.err}
         """
        
 rule index_reads:
@@ -248,7 +248,7 @@ rule remapping_samsort_mates:
     benchmark:
         "benchmarks/kraken/{sample}_remapping_samsort_mates.txt"    
     shell:
-        "samtools sort -n -@ {threads} -m {resources.mem_per_thread}M -o {output} {input} 2> {log.err}"
+        "samtools sort -n -@ {threads} -m {resources.mem_per_thread}M -o {output} -T {resources.tmpdir} {input} 2> {log.err}"
 
 
 rule merge_set_mate:

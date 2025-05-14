@@ -115,7 +115,7 @@ rule name_sort_unsorted:
         "benchmarks/contigmap/{sample}_name_sort_unsorted.txt"
     shell:
         """
-        samtools sort -n -@ {threads} -m {resources.mem_per_thread}M -o {output} {input} 2> {log.err}
+        samtools sort -n -@ {threads} -m {resources.mem_per_thread}M -o {output} -T {resources.tmpdir} {input} 2> {log.err}
         """
 
 ################################################################################
