@@ -117,7 +117,7 @@ include: os.path.join(WORKFLOW_PATH, "snakemodules", "genotype.smk")
 if config['ASSEMBLER'] == 'minia':
     include: os.path.join(WORKFLOW_PATH, "snakemodules", "minia.smk")
 elif config["ASSEMBLER"] == 'velvet':
-    include: os.path.join(WORKFLOW_PATH, "snakemodules", "kraken.smk")
+    include: os.path.join(WORKFLOW_PATH, "snakemodules", "velvet.smk")
 
 
 
