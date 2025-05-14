@@ -94,8 +94,8 @@ rule popins2_place_refalign:
     params:
         readlen = config["readlen"]
     resources:
-        mem_mb = resources["standard_2G"]["mem"],
-        runtime = resources["standard_2G"]["time"]
+        mem_mb = resources["standard_8G"]["mem"],
+        runtime = resources["standard_8G"]["time"]
     threads: 
         threads["single"]
     container:
