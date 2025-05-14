@@ -68,7 +68,7 @@ if config["SICKLE"]=="no":
         benchmark:
             "benchmarks/crop_unmapped/{sample}_sort.txt"
         shell:
-            "samtools sort -n -@ {threads} -m {resources.mem_per_thread}M -o {output} {input.mates} 2> {log.err}" 
+            "samtools sort -n -@ {threads} -m {resources.mem_per_thread}M -o {output} -T {resources.tmpdir} {input.mates} 2> {log.err}" 
 
 
 elif config["SICKLE"]=="yes":
@@ -121,7 +121,7 @@ elif config["SICKLE"]=="yes":
         benchmark:
             "benchmarks/crop_unmapped/{sample}_sort_sickle.txt"
         shell:
-            "samtools sort -n -@ {threads} -m {resources.mem_per_thread}M -o {output} {input.mates} 2> {log.err}"     
+            "samtools sort -n -@ {threads} -m {resources.mem_per_thread}M -o {output} -T {resources.tmpdir} {input.mates} 2> {log.err}"     
      
     rule popins2_sickle:
         input:

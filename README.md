@@ -47,7 +47,7 @@ $ conda activate gcc
 Download the PopinSnake workflow from this repository via
 
 ```
-$ git clone --recursive https://gitlab.informatik.hu-berlin.de/fonda_a6/popinSnake.git
+$ git clone --recursive https://github.com/kehrlab/PopinSnake.git
 $ cd popinSnake
 ```
 
@@ -340,6 +340,13 @@ Change the configuration to `REMAP="yes"` in order to test the remapping sub-wor
 
 ## Cluster Setup
 The popinSnake workflow also supports cluster execution and SLURM scheduling.
+
+To specify the temporary directory on each compute node, use Snakemake’s `--default-resources` flag to set the `tmpdir`, for example:
+```bash
+snakemake --default-resources tmpdir="$TMPDIR/$SLURM_JOBID"
+```
+>**Note:** Directing temporary files to the node-local $TMPDIR/$SLURM_JOBID maximizes I/O performance, avoids conflicts between jobs, and ensures automatic cleanup.
+
 The memory and time for each rules can be configured in `cluster_config.yaml`
 
 This configuration file defines resource profiles and threading parameters for various tasks in the workflow. Under the `resources` section, `memory` (in megabytes) and `time` limits (in HH:MM:SS format) are specified for standard setups, as well as dynamic and sample-based allocations that scale with the number of samples being processed. Additional specialized resource configurations are given for rules like email, analysis, kraken, bwa, samtools, and a high-memory variant of samtools, ensuring that each tool or step has appropriate computational limits. Under the threads section, default single-thread usage is defined, as well as parallelization settings for multi-threaded tools, enabling efficient utilization of available CPU cores during resource-intensive steps. This configuration allows the workflow manager to schedule and run tasks efficiently on a cluster or high-performance computing environment.
