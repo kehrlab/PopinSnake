@@ -175,8 +175,7 @@ rule coordinate_sort_unsorted:
     resources:
         mem_per_thread = resources["samtools_multithread"]["mem_per_thread"],
         mem_mb = lambda wildcards, input, threads, attempt: resources["samtools_multithread"]["mem_per_thread"] * (threads + attempt),
-        runtime = resources["samtools_multithread"]["time"],
-        tmpdir=tempfile.gettempdir()
+        runtime = resources["samtools_multithread"]["time"]
     threads: 
         threads["multi"]["samtools"]
     log:
@@ -185,7 +184,7 @@ rule coordinate_sort_unsorted:
         "benchmarks/contigmap/{sample}_coordinate_sort_unsorted.txt"
     shell:
         """
-        samtools sort -@ {threads} -m {resources.mem_per_thread}M -o {output} -T {tmpdir} {input} 2> {log.err}
+        samtools sort -@ {threads} -m {resources.mem_per_thread}M -o {output} -T {resources.tmpdir} {input} 2> {log.err}
         """
 
 
