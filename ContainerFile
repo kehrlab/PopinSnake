@@ -56,7 +56,13 @@ RUN conda config --add channels conda-forge \
  && conda config --add channels bioconda \
  && conda install -y \
       python=3.9 \
+      ipython=8.22.0 \
+      notebook \
       biopython \
+      pysam \
+      seaborn \
+      plotly \
+      python-kaleido \
       bwa \
       samtools \
       velvet \
@@ -64,10 +70,32 @@ RUN conda config --add channels conda-forge \
       kraken2 \
  && conda clean -afy
 
+# ────── Generate and tweak Jupyter defaults ──────
+RUN jupyter notebook --generate-config \
+ && sed -i \
+      -e "s|#c.NotebookApp.ip = 'localhost'|c.NotebookApp.ip = '0.0.0.0'|" \
+      -e "s|#c.NotebookApp.open_browser = True|c.NotebookApp.open_browser = False|" \
+      ~/.jupyter/jupyter_notebook_config.py \
+ && printf "\
+c.NotebookApp.token = ''\n\
+c.NotebookApp.password = ''\n\
+c.NotebookApp.allow_root = True\n" \
+    >> ~/.jupyter/jupyter_notebook_config.py
 
 # 2.2 Copy the compiled binary in
 COPY --from=builder /usr/local/bin/popins4snake /usr/local/bin/
 COPY --from=builder /usr/local/bin/sickle /usr/local/bin/
-# 2.3 Default entrypoint: show help
-ENTRYPOINT ["popins4snake"]
-CMD ["--help"]
+
+# 2.3 Expose Jupyter’s default port
+EXPOSE 8888
+
+# 2.4 one-liner to start notebook
+RUN printf '#!/usr/bin/env bash\nexec jupyter notebook\n' \
+    > /usr/local/bin/start-notebook \
+ && chmod +x /usr/local/bin/start-notebook
+
+# # 2.3 Default entrypoint: show help
+# ENTRYPOINT ["jupyter", "notebook", "--ip=0.0.0.0", "--no-browser", "--allow-root"]
+# CMD ["--NotebookApp.token=''", "--NotebookApp.password=''", "--NotebookApp.notebook_dir=/"]  
+# ENTRYPOINT ["popins4snake"]
+# CMD ["--help"]
