@@ -43,6 +43,8 @@ if config["SICKLE"]=="no":
             runtime = resources["analysis"]["time"]
         threads: threads["single"]
         group: "unmapped_analysis"
+        container:
+            containers["popins4snake"]
         notebook:
             os.path.join(WORKFLOW_PATH,"snakemodules/notebooks/read_numbers_in_bar_graph.py.ipynb")
 
@@ -94,6 +96,8 @@ if config["SICKLE"]=="no":
                 runtime = resources["analysis"]["time"]
             threads: threads["single"]
             group: "unmapped_analysis_no_filtler_after_clean"
+            container:
+                containers["popins4snake"]
             notebook:
                 os.path.join(WORKFLOW_PATH,"snakemodules/notebooks/read_numbers_in_bar_graph.py.ipynb")
 
@@ -144,6 +148,8 @@ elif config["SICKLE"]=="yes":
                 runtime = resources["analysis"]["time"]
             threads: threads["single"]
             group: "unmapped_analysis_before_filter"
+            container:
+                containers["popins4snake"]
             notebook:
                 os.path.join(WORKFLOW_PATH,"snakemodules/notebooks/read_numbers_in_bar_graph.py.ipynb")
 
@@ -193,6 +199,8 @@ elif config["SICKLE"]=="yes":
                 runtime = resources["analysis"]["time"]
             threads: threads["single"]
             group: "unmapped_analysis_after_filter"
+            container:
+                containers["popins4snake"]
             notebook:
                 os.path.join(WORKFLOW_PATH,"snakemodules/notebooks/read_numbers_in_bar_graph.py.ipynb")
 
@@ -243,6 +251,8 @@ elif config["SICKLE"]=="yes":
                 runtime = resources["analysis"]["time"]
             threads: threads["single"]
             group: "unmapped_analysis_before_clean_filter"
+            container:
+                containers["popins4snake"]
             notebook:
                 os.path.join(WORKFLOW_PATH,"snakemodules/notebooks/read_numbers_in_bar_graph.py.ipynb")
 
@@ -291,6 +301,8 @@ elif config["SICKLE"]=="yes":
                 runtime = resources["analysis"]["time"]
             threads: threads["single"]
             group: "unmapped_analysis_after_clean"
+            container:
+                containers["popins4snake"]
             notebook:
                 os.path.join(WORKFLOW_PATH,"snakemodules/notebooks/read_numbers_in_bar_graph.py.ipynb")
             
@@ -338,6 +350,8 @@ elif config["SICKLE"]=="yes":
                 runtime = resources["analysis"]["time"]
             threads: threads["single"]
             group: "unmapped_analysis_after_clean_filter"
+            container:
+                containers["popins4snake"]
             notebook:
                 os.path.join(WORKFLOW_PATH,"snakemodules/notebooks/read_numbers_in_bar_graph.py.ipynb")
 
@@ -383,6 +397,8 @@ rule assembly_analysis_table:
         runtime = resources["analysis"]["time"]
     threads: threads["single"]
     group: "assembly_analysis_table"
+    container:
+        containers["popins4snake"]
     notebook:
         os.path.join(WORKFLOW_PATH,"snakemodules/notebooks/sample_analysis_table.py.ipynb")
     
@@ -428,6 +444,8 @@ rule assembly_analysis:
         runtime = resources["analysis"]["time"]
     threads: threads["single"]
     group: "assembly_analysis"
+    container:
+        containers["popins4snake"]
     notebook:
         os.path.join(WORKFLOW_PATH,"snakemodules/notebooks/content_distribution.py.ipynb")
     
@@ -495,5 +513,7 @@ rule coverage_analysis:
         runtime = resources["analysis"]["time"]
     threads: threads["single"]
     group: "coverage_analysis"
+    container:
+        containers["popins4snake"]
     notebook:
         os.path.join(WORKFLOW_PATH,"snakemodules/notebooks/contig_coverage_heatmap.py.ipynb")
