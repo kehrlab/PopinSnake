@@ -63,7 +63,7 @@ RUN conda install -y mamba \
       -c bioconda \
       python=3.10 \
       ipython=8.22.0 \
-      notebook \
+      jupyter \
       biopython \
       pysam \
       seaborn \
