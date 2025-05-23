@@ -54,7 +54,10 @@ FROM docker.io/continuumio/miniconda3:latest
 # 2.1 Add Bioconda & Conda-Forge channels, install tools
 RUN conda config --add channels conda-forge \
  && conda config --add channels bioconda \
- && conda install -y \
+ && conda config --set channel_priority strict
+
+RUN conda install -y mamba \
+ && mamba install -y \
       python=3.9 \
       ipython=8.22.0 \
       notebook \
@@ -63,6 +66,7 @@ RUN conda config --add channels conda-forge \
       seaborn \
       plotly \
       python-kaleido \
+ && mamba install -y \
       bwa \
       samtools \
       velvet \
