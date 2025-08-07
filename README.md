@@ -1,3 +1,7 @@
+<p align="center">
+   <img src="docs/popinSnake.png" alt="PopinSnake Logo">
+</p>
+
 # PopinSnake workflow
 
 This Git repository contains a generic [Snakemake](https://snakemake.readthedocs.io/en/stable/) workflow for running the program [*PopIns4Snake*](https://github.com/kehrlab/popins4snake.git).
