@@ -1,5 +1,5 @@
 <p align="center">
-   <img src="docs/popinSnake.png" alt="PopinSnake Logo" width="300" height="300">
+   <img src="docs/popinSnake.png" alt="PopinSnake Logo" width="100" height="100">
 </p>
 
 # PopinSnake workflow
