@@ -17,7 +17,7 @@ REFERENCE = config["REFERENCE"]
 ALTREF = config["ALTREF"]
 kraken_db_path = config["kraken_db_path"]
 OUTPUT_PATH = config["OUTPUT_PATH"]
-WORKFLOW_PATH = config["WORKFLOW_PATH"]
+WORKFLOW_PATH = os.path.expandvars(config["WORKFLOW_PATH"])
 ASSEMBLER = config["ASSEMBLER"]
 resources = config["resources"]
 threads = config["threads"]
@@ -118,3 +118,4 @@ elif config["ASSEMBLER"] == 'velvet':
 rule all:
     input:
         input_files
+
