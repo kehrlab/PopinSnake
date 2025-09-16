@@ -7,17 +7,47 @@
 This Git repository contains a generic [Snakemake](https://snakemake.readthedocs.io/en/stable/) workflow for running the program [*PopIns4Snake*](https://github.com/kehrlab/popins4snake.git).
 It is supposed to facilitate your PopIns run and provides examples for a streamlined workflow. 
 
+The workflow is maintained to be compatible with a local installation of [Snakemake v9.11.2](https://snakemake.readthedocs.io/en/v9.11.2/)
 ## Contents
 
-1. [Environment Setup](#Environment-Setup)
-1. [Program Installation](#program-installation)
-1. [Workflow Configuration](#setting-up-your-workflow)
-1. [Workflow execution](#workflow-execution)
-1. [Example data](#example-data)
-1. [References](#references)
+1. [Workflow Installation and Usage](#workflow-installation-and-usage)
+2. [Workflow Configuration](#setting-up-your-workflow)
+3. [Example Data](#example-data)
+4. [References](#references)
+
+## Workflow Installation and Usage
+
+Set up an environment for running [snakemake](https://snakemake.readthedocs.io/en/stable/)
+```
+conda create -c conda-forge -c bioconda -n snakemakev9 snakemake=9.11.2
+```
+
+Download the PopinSnake workflow from this repository via
+```
+$ git clone --recursive https://github.com/kehrlab/PopinSnake.git
+```
+The flag `--recursive` is required to download the required submodules.
 
 
-## Environment Setup
+### Use PopinSnake with container
+For the a portable and reproducible workflow execution, we provide a container package through [GitHub Container Registry(GHCR)](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry).
+
+Follow [snakemake documentation](https://snakemake.readthedocs.io/en/stable/executing/cli.html#snakemake.cli-get_argument_parser-apptainer/singularity) on how to execute workflow through singularity or apptainer. Make sure to bind all used paths in the command.
+
+Example:
+```
+snakemake --cores 5  --use-singularity --singularity-args "-B [path1],[path2]"
+```
+
+The default containers in 'config/container_config.yaml':
+```
+popins4snake: docker://ghcr.io/kehrlab/popins4snake:latest
+py27: docker://python:2.7
+```
+For more customizable cofiguration see [Workflow Configuration](#setting-up-your-workflow)
+
+
+### Use PopinSnake through manual environment setup
 
 As a minimum, an installation of the [Conda package manager](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html) (Miniconda) is required for running the workflow.
 In addition, we recommend to install [Mamba](https://mamba.readthedocs.io/en/latest/installation.html) in the Conda base environment:
@@ -30,8 +60,8 @@ If you do *not* have [Snakemake](https://snakemake.readthedocs.io/en/stable/gett
 
 ```
 $ conda activate base
-$ mamba create -c conda-forge -c bioconda -n snakemake snakemake
-$ conda activate snakemake
+$ mamba create -c conda-forge -c bioconda -n snakemakev9 snakemake=9.11.2
+$ conda activate snakemakev9
 ```
 
 Most dependencies of the PopIns workflow will be automatically installed via Conda/Mamba when running the workflow for the first time.
@@ -46,17 +76,6 @@ $ mamba create -c conda-forge -n gcc cxx-compiler zlib cmake
 $ conda activate gcc
 ```
 
-## Program Installation
-
-Download the PopinSnake workflow from this repository via
-
-```
-$ git clone --recursive https://github.com/kehrlab/PopinSnake.git
-$ cd popinSnake
-```
-
-The flag `--recursive` is required to download the required programs.
-
 Before you can run the workflow, you need to install the programs `popins4snake` and `sickle`.
 The `gatb-minia-pipeline` program requires no separate installation.
 
@@ -67,7 +86,7 @@ Before we can compile *PopIns4Snake*, we need to compile and install its depende
 For this, navigate to the `bifrost` folder and compile *Bifrost* using the flag `MAX_KMER_SIZE=64`:
 
 ```
-$ cd submodules/popins4snake/external/bifrost
+$ cd PopinSnake/submodules/popins4snake/external/bifrost
 $ mkdir local
 $ mkdir build && cd build
 $ cmake .. -DCMAKE_INSTALL_PREFIX=../local -DMAX_KMER_SIZE=64
@@ -95,7 +114,7 @@ The workflow is pre-configured to search for it in this folder.
 All you need to do to install *Sickle* is to navigate to its folder and run make:
 
 ```
-$ cd submodules/sickle
+$ cd PopinSnake/submodules/sickle
 $ make
 ```
 
@@ -116,9 +135,42 @@ In case you created the GCC Conda environment, remember to now activate the Snak
 $ conda activate snakemake
 ```
 
-## Workflow Configuration
+#### Workflow Execution
 
-You can find all configurable parameters of the workflow in the file `snake_config.yaml`.
+After the initial setup, you can execute the workflow from the main directory of `popinSnake/` which contains the main Snakefile:
+
+```
+$ snakemake --use-conda --cores 1
+```
+
+The tag `--use-conda` is required for successful workflow execution unless you have all workflow dependencies (and their correct versions) specified in Conda environments (see `workflow/envs/` folder) installed in a location available on your path.
+
+__Note: When you run the workflow for the first time using `--use-conda`, it will create the conda environments.
+This process may take some time. The next time you run the workflow, this process is not necessary again.__
+
+If you chose not to install `mamba` (see [Prerequisites](#prerequisites)), then you now have to add `--conda-frontend conda` to the snakemake command.
+
+Similarly, other Snakemake options are available.
+For example, you can specify `--cores all` to use all available cores instead of just a single core or specify any other number of cores.
+
+The Snakemake command includes execution of all Jupyter notebooks we implemented for intermediate data analysis.
+The output of these analyses can be found in the `results` folder.
+
+@NOTICE: If user chose to use the data analysis module with jupyter notebooks, the command for execute the workflow interactively is as below:
+```
+$ snakemake --use-conda --cores 1 --edit-notebook [OUTPUT_PATH]/popinSnake/results/insertions_genotypes.vcf.gz
+```
+If your workflow doesn't wait for the jupyter notebooks to be opened halfway through the analysis, we suggest switching to snakemake version 5.32.0 for a better experience. 
+
+
+## Workflow Configuration
+Three configuration files are provided for the workflow:<br>                                                        
+- [General workflow configuration](#general-workflow-configuration) with `snake_config.yaml`
+- [Container configuration](#container-configuration) with `container_config.yaml`
+- [Cluster configuration](#cluster-configuration) with `cluster_config.yaml`
+
+### General workflow configuration
+You can find all configurable parameters of the workflow in the file `PopinSnake/config/snake_config.yaml`.
 You will need to adjust them according to your input data, preferred output folders, etc. as described in the following.
 
 The pre-configured values allow running the workflow on the [example data](#example-data) included in this repository.
@@ -292,34 +344,39 @@ python_script:
    snakemodules/scripts/remap_classified_human.py
 ```
 
-
-## Workflow Execution
-
-After the initial setup, you can execute the workflow from the main directory of `popinSnake/` which contains the main Snakefile:
-
+### Container Configuration
+You can find configurable containers in the file `PopinSnake/config/container_config.yaml`.
 ```
-$ snakemake --use-conda --cores 1
+containers:
+    popins4snake: docker://ghcr.io/kehrlab/popins4snake:latest
+    py27: docker://python:2.7
 ```
+the popins4snake container can be built through the ContainerFile in the repository
+the py27 container is needed for the execution of [GATB-minia-pipeline](https://github.com/GATB/gatb-minia-pipeline)
 
-The tag `--use-conda` is required for successful workflow execution unless you have all workflow dependencies (and their correct versions) specified in Conda environments (see `workflow/envs/` folder) installed in a location available on your path.
 
-__Note: When you run the workflow for the first time using `--use-conda`, it will create the conda environments.
-This process may take some time. The next time you run the workflow, this process is not necessary again.__
+### Cluster Configuration
+The popinSnake workflow also supports cluster execution and SLURM scheduling.
 
-If you chose not to install `mamba` (see [Prerequisites](#prerequisites)), then you now have to add `--conda-frontend conda` to the snakemake command.
+The memory and time for each rules can be configured in `PopinSnake/config/cluster_config.yaml`.
 
-Similarly, other Snakemake options are available.
-For example, you can specify `--cores all` to use all available cores instead of just a single core or specify any other number of cores.
-
-The Snakemake command includes execution of all Jupyter notebooks we implemented for intermediate data analysis.
-The output of these analyses can be found in the `results` folder.
-
-If from the config file, user chose to use the data analysis module with jupyter notebooks, the command for execute the workflow is as below:
+`cluster_config.yaml` defines resource profiles and threading parameters for various tasks in the workflow. <br>
+Under the `resources` section, `memory` (in megabytes) and `time` limits (in HH:MM:SS format) are specified for standard setups, as well as dynamic and sample-based allocations that scale with the number of samples being processed. Additional specialized resource configurations are given for rules like email, analysis, kraken, bwa, samtools, and a high-memory variant of samtools, ensuring that each tool or step has appropriate computational limits. <br>
+For rules use `sample_based` scheduling, user need to define the allowed memory for each sample, the total number of samples will be obtained automatically from the input folder and the final memory will be calculated and defined.<br>
+For rules use `dynamic_schedule` to handle memory-intensive tasks efficiently. Users define the initial memory allocation with the `mem_init` parameter in each rule. If a rule fails due to insufficient memory, Snakemake retries the rule up to the number of times specified by `--restart-times`, e.g. 
 ```
-$ snakemake --use-conda --cores 1 --edit-notebook [OUTPUT_PATH]/popinSnake/results/insertions_genotypes.vcf.gz
+$ snakemake --restart-times 3 --cores 10
 ```
-@NOTICE: If your workflow doesn't wait for the jupyter notebooks to be opened halfway through the analysis, we suggest switching to snakemake version 5.32.0 for a better experience. 
-<!-- `[WORKFLOW_PATH]` is as defined in the config file where the main popinSnake workflow is.  -->
+doubling the memory allocation on each retry. This ensures tasks with unpredictable memory requirements can adjust dynamically without manual intervention. Make sure your cluster supports increasing memory requests, and verify logs to confirm failures are memory-related.<br>
+Under the `threads` section, default single-thread usage is defined, as well as parallelization settings for multi-threaded tools, enabling efficient utilization of available CPU cores during resource-intensive steps. This configuration allows the workflow manager to schedule and run tasks efficiently on a cluster or high-performance computing environment.
+
+To specify the temporary directory on each compute node, use Snakemake’s `--default-resources` flag to set the `tmpdir`, for example:
+```bash
+snakemake --default-resources tmpdir="$TMPDIR/$SLURM_JOBID"
+```
+>**Note:** Directing temporary files to the node-local $TMPDIR/$SLURM_JOBID maximizes I/O performance, avoids conflicts between jobs, and ensures automatic cleanup.
+
+
 
 ## Example data
 
@@ -341,27 +398,6 @@ You can find three BAM files (`.bam`) and the corresponding index files (`.bam.b
 <!-- In addition, a BWA-indexed alternative reference for contamination removal is provided in the subfolder `example_data/virus_ref/`.
 However, the default configuration will not use it as the `REMAP` parameter is set to `"no"`.
 Change the configuration to `REMAP="yes"` in order to test the remapping sub-workflow on the example data. -->
-
-## Cluster Setup
-The popinSnake workflow also supports cluster execution and SLURM scheduling.
-
-To specify the temporary directory on each compute node, use Snakemake’s `--default-resources` flag to set the `tmpdir`, for example:
-```bash
-snakemake --default-resources tmpdir="$TMPDIR/$SLURM_JOBID"
-```
->**Note:** Directing temporary files to the node-local $TMPDIR/$SLURM_JOBID maximizes I/O performance, avoids conflicts between jobs, and ensures automatic cleanup.
-
-The memory and time for each rules can be configured in `cluster_config.yaml`
-
-This configuration file defines resource profiles and threading parameters for various tasks in the workflow. Under the `resources` section, `memory` (in megabytes) and `time` limits (in HH:MM:SS format) are specified for standard setups, as well as dynamic and sample-based allocations that scale with the number of samples being processed. Additional specialized resource configurations are given for rules like email, analysis, kraken, bwa, samtools, and a high-memory variant of samtools, ensuring that each tool or step has appropriate computational limits. Under the threads section, default single-thread usage is defined, as well as parallelization settings for multi-threaded tools, enabling efficient utilization of available CPU cores during resource-intensive steps. This configuration allows the workflow manager to schedule and run tasks efficiently on a cluster or high-performance computing environment.
-
-For the rules use `sample_based` scheduling, user need to define the allowed memory for each sample, the total number of samples will be obtained automatically from the input folder and the final memory will be calculated and defined.
-
-For the rules use `dynamic_schedule` to handle memory-intensive tasks efficiently. Users define the initial memory allocation with the `mem_init` parameter in each rule. If a rule fails due to insufficient memory, Snakemake retries the rule up to the number of times specified by `--restart-times`, e.g. 
-```
-$ snakemake --restart-times 3 --cores 10
-```
-doubling the memory allocation on each retry. This ensures tasks with unpredictable memory requirements can adjust dynamically without manual intervention. Make sure your cluster supports increasing memory requests, and verify logs to confirm failures are memory-related.
 
 
 ## References
