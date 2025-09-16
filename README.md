@@ -11,7 +11,7 @@ The workflow is maintained to be compatible with a local installation of [Snakem
 ## Contents
 
 1. [Workflow Installation and Usage](#workflow-installation-and-usage)
-2. [Workflow Configuration](#setting-up-your-workflow)
+2. [Workflow Configuration](#workflow-configuration)
 3. [Example Data](#example-data)
 4. [References](#references)
 
