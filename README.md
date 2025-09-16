@@ -351,9 +351,9 @@ containers:
     popins4snake: docker://ghcr.io/kehrlab/popins4snake:latest
     py27: docker://python:2.7
 ```
-the popins4snake container can be built through the ContainerFile in the repository
-the py27 container is needed for the execution of [GATB-minia-pipeline](https://github.com/GATB/gatb-minia-pipeline)
-
+The `popins4snake` container can be built through the ContainerFile in the repository. <br>
+The `py27` container is needed for the execution of [GATB-minia-pipeline](https://github.com/GATB/gatb-minia-pipeline). <br>
+More information on working with GitHub Container Registry can be found [here](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry).
 
 ### Cluster Configuration
 The popinSnake workflow also supports cluster execution and SLURM scheduling.
