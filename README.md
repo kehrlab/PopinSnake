@@ -44,7 +44,7 @@ The default containers in 'config/container_config.yaml':
 popins4snake: docker://ghcr.io/kehrlab/popins4snake:latest
 py27: docker://python:2.7
 ```
-For more customizable cofiguration see [Workflow Configuration](#setting-up-your-workflow)
+For more customizable configuration see [Workflow Configuration](#workflow-configuration)
 
 
 ### Use PopinSnake through manual environment setup
